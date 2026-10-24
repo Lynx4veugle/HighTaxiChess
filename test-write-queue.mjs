@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {createWriteQueue} from './src/persistence/write-queue.js';
+const order=[];
+const queue=createWriteQueue(async value=>{await new Promise(r=>setTimeout(r,value.delay));order.push(value.id);});
+const a=queue.enqueue({id:'A',delay:30});
+const b=queue.enqueue({id:'B',delay:0});
+const c=queue.enqueue({id:'C',delay:0});
+await Promise.all([a,b,c]);
+await queue.flush();
+assert.deepEqual(order,['A','B','C']);
+console.log('WRITE QUEUE SERIALIZATION TEST OK');

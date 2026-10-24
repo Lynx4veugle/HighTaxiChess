@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const app=fs.readFileSync('./app.js','utf8'), index=fs.readFileSync('./index.html','utf8'), css=fs.readFileSync('./styles.css','utf8'), sw=fs.readFileSync('./sw.js','utf8'), version=fs.readFileSync('./version.js','utf8'), arrows=fs.readFileSync('./src/ui/arrows.js','utf8');
+assert.match(version,/APP_VERSION="1\.0\.1"/);
+for(const icon of ["!!","!","★","👍","✓","📖","?!","?","❌","??"]) assert.match(app,new RegExp(`icon:"${icon.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')}"`));
+assert.match(index,/id="globalTree"/); assert.match(index,/id="analysisScopeBar"/); assert.match(index,/data-side="w"/); assert.match(index,/data-side="b"/); assert.match(index,/id="analysisMoves"/); assert.match(index,/id="analysisEval"/);
+assert.match(app,/globalTreeSideFilter/); assert.match(app,/if\(id!=="boardScreen"\)cancelEngineAnalysis/); assert.match(app,/function setAnalysisScope/); assert.doesNotMatch(app,/const scopeSide=state\.analysisScope/); assert.match(app,/const flip=boardRotated/); assert.match(app,/playedByUser/);
+assert.match(arrows,/engineBest/); assert.match(arrows,/#1d4ed8/);
+assert.match(css,/\.moveArrows/); assert.match(css,/\.analysisScopeTab/); assert.doesNotMatch(app,/\$\("annotationRow"\)\.addEventListener\("click"/);
+assert.match(sw,/v1\.0\.1/);
+console.log('CURRENT-VERSION ANALYSIS/SCOPE/ARROWS/ANNOTATION TESTS OK');
